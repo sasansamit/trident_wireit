@@ -14,11 +14,14 @@ class EachNode(BaseDSLNode):
     def __init__(self, module):
         Node.__init__(self, module)
         pass
+    
+    def getDSLCode_(self):
+        return self._module['value']['code']
 
     def visit(self, root, state):
         operations = self.operations(state)
 
-        filePath = self.saveDSL_(self._module['value']['code'], state)
+        filePath = self.saveDSL_(self.getDSLCode_(), state)
 
         dslInvokerId = "dslInvoker_" + Utils.getUid()
         attribs = {

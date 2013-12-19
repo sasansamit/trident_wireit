@@ -1,24 +1,15 @@
 #!/usr/bin/env python
 
-
 import json
-import logging
-import os
 import os.path
-import uuid
 import shutil
 import subprocess
 
-from lxml import etree
 from kaseya.xml.TopologyXMLGenerator import TopologyXMLGenerator
 from kaseya.xml.Utils import Utils
-from tornado import gen
-
 from tornado.options import define, options, parse_command_line
-import tornado.escape
 import tornado.ioloop
 import tornado.web
-import xml.etree.cElementTree as ET
 
 
 define("port", default = 8088, help = "run on the given port", type = int)
@@ -40,7 +31,10 @@ class XMLHandler(tornado.web.RequestHandler):
         state = {}
         state[Utils.OUTPUTPATH_NAME] = outputFolder = os.path.join(os.path.dirname(__file__), 'output')
 
-        shutil.rmtree(outputFolder)
+        try:
+            shutil.rmtree(outputFolder)
+        except OSError as ex:
+            print 'No output folder to delete.'
 
         try:
             os.makedirs(outputFolder)

@@ -15,7 +15,7 @@ class GroupByNode(Node):
         pass
 
     def groupBy(self):
-        return 'deviceid'
+        return self._module['value']['groupby']
 
     def visit(self, root, state):
         operations = self.operations(state)

@@ -18,7 +18,7 @@ class StreamNode(Node):
         return 'localhost:2181'
 
     def topic(self):
-        return 'memory'
+        return self._module['value']['topic']
 
     def isSource(self):
         return self._module['name'] == 'Stream'
