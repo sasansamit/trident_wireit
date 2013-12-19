@@ -1,0 +1,2 @@
+[kaseya]
+memory_tuple = ["timestamp","deviceid","memory"]

@@ -28,6 +28,7 @@ class EachNode(BaseDSLNode):
                    'id' : dslInvokerId,
                    'class' : 'com.kaseya.trident.dsl.GroovyDSLInvoker',
                    Utils.namespace(Utils.NS_C, 'filePath') : filePath,
+                   Utils.namespace(Utils.NS_C, 'tuple-ref') : state[Utils.JSONTUPLE_NAME].attrib['id'],
                    }
         etree.SubElement(root, 'bean', attribs)
 

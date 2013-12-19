@@ -5,6 +5,7 @@ import os.path
 import shutil
 import subprocess
 
+from kaseya.Settings import Settings
 from kaseya.xml.TopologyXMLGenerator import TopologyXMLGenerator
 from kaseya.xml.Utils import Utils
 from tornado.options import define, options, parse_command_line
@@ -30,6 +31,7 @@ class XMLHandler(tornado.web.RequestHandler):
 
         state = {}
         state[Utils.OUTPUTPATH_NAME] = outputFolder = os.path.join(os.path.dirname(__file__), 'output')
+        state[Utils.SETTINGS_NAME] = Settings()
 
         try:
             shutil.rmtree(outputFolder)
@@ -47,7 +49,7 @@ class XMLHandler(tornado.web.RequestHandler):
         topologyXmlPath = os.path.join(outputFolder, 'topology.xml')
         generator.saveToFile(topologyXmlPath)
 
-        cmdStr = 'sh ktrident/bin/app "{0}"'.format(os.path.relpath(topologyXmlPath))
+        cmdStr = 'sh ktrident/bin/app "{0}"&'.format(os.path.relpath(topologyXmlPath))
         print(cmdStr)
         subprocess.call(cmdStr, shell=True)
 

@@ -7,6 +7,7 @@ from lxml import etree
 
 from kaseya.xml.Node import Node
 from kaseya.xml.Utils import Utils
+from kaseya import Settings
 
 
 class StreamNode(Node):
@@ -61,14 +62,13 @@ class StreamNode(Node):
                    'id' : jsonOutputTupleId,
                    }
         state[Utils.JSONTUPLE_NAME] = jsonTuple = etree.SubElement(root, Utils.namespace(Utils.NS_UTIL, 'list'), attribs)
-        etree.SubElement(jsonTuple, 'value').text = 'timestamp'
-        etree.SubElement(jsonTuple, 'value').text = 'deviceid'
-        etree.SubElement(jsonTuple, 'value').text = 'memory'
+        self.addJSONTuple_(jsonTuple, state)
 
         jsonAdapterFunctionId = 'jsonAdapterFunction_' + Utils.getUid()
         attribs = {
                    'id' : jsonAdapterFunctionId,
-                   'class' : 'com.kaseya.trident.functions.JSONAdapterFunction'
+                   'class' : 'com.kaseya.trident.functions.JSONAdapterFunction',
+                   Utils.namespace(Utils.NS_C, 'tuple-ref') : jsonOutputTupleId,
                    }
         etree.SubElement(root, 'bean', attribs)
 
@@ -103,4 +103,14 @@ class StreamNode(Node):
                    'bean' : streamId,
                    }
         etree.SubElement(streams, 'ref', attribs)
+        pass
+
+    def addJSONTuple_(self, tupleRoot, state):
+        settings = state[Utils.SETTINGS_NAME]
+        tuple = settings.getTupleForTopic(self.topic())
+
+        for element in tuple:
+            etree.SubElement(tupleRoot, 'value').text = element
+            pass
+        pass
     pass

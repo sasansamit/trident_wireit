@@ -24,6 +24,7 @@ class Utils:
     TOPOLOGY_NAME = 'topology'
     JSONTUPLE_NAME = 'jsontuple'
     OUTPUTPATH_NAME = 'output_path'
+    SETTINGS_NAME = 'settings'
 
     _gIdCount = 0
 
